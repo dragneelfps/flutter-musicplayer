@@ -22,7 +22,7 @@ class _AlbumsListState extends State<AlbumsList>
   final List<Song> songs;
   List<Album> albums;
 
-  _AlbumsListState({this.songs})
+  _AlbumsListState({this.songs});
 
   @override
   void initState() {
