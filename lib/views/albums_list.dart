@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:musicplayer/models/album.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:musicplayer/views/album_detail.dart';
+import 'package:musicplayer/views/util/custom_page_route_builder.dart';
 
 class AlbumsList extends StatefulWidget {
   final List<Song> songs;
@@ -21,9 +22,7 @@ class _AlbumsListState extends State<AlbumsList>
   final List<Song> songs;
   List<Album> albums;
 
-  _AlbumsListState({this.songs}) {
-    print('init Albums');
-  }
+  _AlbumsListState({this.songs})
 
   @override
   void initState() {
@@ -35,7 +34,6 @@ class _AlbumsListState extends State<AlbumsList>
 
   void _loadAlbums() async {
     final loadedAlbums = Album.getAlbumsFromSongs(songs);
-    print(loadedAlbums);
     setState(() {
       albums = loadedAlbums;
     });
@@ -71,18 +69,23 @@ class _AlbumsListState extends State<AlbumsList>
           } else {
             albumArt = Image.asset(album.albumArt);
           }
+          final albumArtTag = 'album_art_${album.albumId}';
           return InkWell(
             onTap: () {
               Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => AlbumDetail(album: album)));
+                  DurationMaterialPageRoute(
+                      duration: Duration(milliseconds: 500),
+                      builder: (context) =>
+                          AlbumDetail(album: album, imageTag: albumArtTag)));
             },
             child: Container(
               padding: EdgeInsets.all(2),
               child: Column(
                 children: [
-                  AspectRatio(aspectRatio: 1, child: albumArt),
+                  AspectRatio(
+                      aspectRatio: 1,
+                      child: Hero(tag: albumArtTag, child: albumArt)),
                   Container(
                     color: Colors.black12,
                     child: ListTile(

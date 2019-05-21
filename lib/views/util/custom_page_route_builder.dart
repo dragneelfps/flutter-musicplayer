@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
-class CustomPageRotueBUild extends MaterialPageRoute {
+class DurationMaterialPageRoute extends MaterialPageRoute {
+  final Duration duration;
+  DurationMaterialPageRoute({WidgetBuilder builder, this.duration})
+      : super(builder: builder);
+
   @override
-  Duration get transitionDuration => Duration(seconds: 2);
+  Duration get transitionDuration => duration;
 }

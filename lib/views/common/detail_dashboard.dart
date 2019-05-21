@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class DetailDashboard extends StatelessWidget {
   final String imageUri;
-  final String imageHeroTag;
+  final String imageTag;
   final List<DataTile> dataItems;
   final Color color;
 
@@ -11,7 +11,7 @@ class DetailDashboard extends StatelessWidget {
       this.imageUri,
       this.dataItems = const <DataTile>[],
       this.color = Colors.white,
-      this.imageHeroTag})
+      this.imageTag})
       : super(key: key);
 
   @override
@@ -30,7 +30,7 @@ class DetailDashboard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Hero(child: image, tag: imageHeroTag),
+            Hero(child: image, tag: imageTag),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),

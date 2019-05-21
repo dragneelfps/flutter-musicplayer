@@ -49,7 +49,6 @@ class _SongsListState extends State<SongsList>
       return Container();
     } else {
       final songsTiles = songs.map((song) {
-        print(song.duration);
         final albumArt = song.albumArt == null
             ? Icon(Icons.album, size: 50)
             : Image.asset(song.albumArt, width: 50, height: 50);

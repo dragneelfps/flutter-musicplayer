@@ -6,8 +6,10 @@ import 'package:musicplayer/views/util/helpers.dart';
 
 class AlbumDetail extends StatelessWidget {
   final Album album;
+  final String imageTag;
 
-  const AlbumDetail({Key key, @required this.album}) : super(key: key);
+  const AlbumDetail({Key key, @required this.album, this.imageTag})
+      : super(key: key);
 
   List<Widget> _getActions() {
     return <Widget>[
@@ -42,18 +44,45 @@ class AlbumDetail extends StatelessWidget {
     ];
   }
 
+  List<ListTile> _buildAlbumSongsList() {
+    return album.songs.map((song) {
+      return ListTile(
+        title: Text(song.title),
+        subtitle: Text(formatTimestamp(song.duration)),
+        trailing: PopupMenuButton(
+          padding: EdgeInsets.all(0),
+          onSelected: (String value) {},
+          itemBuilder: (context) {
+            return [
+              PopupMenuItem(
+                value: 'play_next',
+                child: Text('Play Next'),
+              )
+            ];
+          },
+        ),
+      );
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildDetailApp(
-          context: context, title: album.albumName, actions: _getActions()),
+          context: context,
+          title: album.albumName,
+          actions: _getActions(),
+          color: Colors.green),
       body: Column(
         children: [
           DetailDashboard(
             imageUri: album.albumArt,
-            imageHeroTag: 'album_art',
+            imageTag: imageTag,
             dataItems: _buildDashboardDataItems(),
-            color: Theme.of(context).primaryColor,
+            color: Colors.green,
+          ),
+          Expanded(
+            child: ListView(children: _buildAlbumSongsList()),
           )
         ],
       ),
