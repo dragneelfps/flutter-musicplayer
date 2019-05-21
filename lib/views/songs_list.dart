@@ -3,13 +3,11 @@ import 'package:flutter/material.dart';
 
 class SongsList extends StatefulWidget {
   final List<Song> songs;
-  final bool isLoaded;
 
-  const SongsList({Key key, this.songs, this.isLoaded}) : super(key: key);
+  const SongsList({Key key, this.songs}) : super(key: key);
 
   @override
-  _SongsListState createState() =>
-      _SongsListState(songs: songs, isLoaded: isLoaded);
+  _SongsListState createState() => _SongsListState(songs: songs);
 }
 
 class _SongsListState extends State<SongsList>
@@ -18,9 +16,8 @@ class _SongsListState extends State<SongsList>
   bool get wantKeepAlive => true;
 
   final List<Song> songs;
-  final bool isLoaded;
 
-  _SongsListState({this.songs, this.isLoaded});
+  _SongsListState({this.songs});
 
   Widget _buildShuffleRow() {
     return InkWell(
@@ -48,16 +45,18 @@ class _SongsListState extends State<SongsList>
   }
 
   Widget _buildSongsList() {
-    if (!isLoaded) {
+    if (songs == null) {
       return Container();
     } else {
       final songsTiles = songs.map((song) {
+        print(song.duration);
         final albumArt = song.albumArt == null
             ? Icon(Icons.album, size: 50)
             : Image.asset(song.albumArt, width: 50, height: 50);
         final uriSplits = song.uri.split('/');
         final folderName = uriSplits.elementAt(uriSplits.length - 2);
         return ListTile(
+          onTap: () {},
           leading: albumArt,
           title: Text(song.title),
           subtitle: Text('${song.artist} | $folderName'),

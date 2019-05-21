@@ -11,6 +11,7 @@ class Album {
 
   int getSongsCount() => songs.length;
 
+  //Returns length in millis
   int getAlbumLength() {
     int length = 0;
     songs.forEach((song) {
@@ -25,7 +26,7 @@ class Album {
       .firstWhere((album) => album.albumId == albumId, orElse: () => null);
 
   static List<Album> getAlbumsFromSongs(final List<Song> songs) {
-    final albums = List<Album>();
+    allAlbums = List();
     songs.forEach((song) {
       Album storedAlbum = getAlbumById(song.albumId);
       if (storedAlbum == null) {
@@ -37,12 +38,11 @@ class Album {
             songs: songsForThisAlbum,
             albumArt: song.albumArt,
             artist: song.artist);
-        albums.add(newAlbum);
+        allAlbums.add(newAlbum);
       } else {
         storedAlbum.songs.add(song);
       }
     });
-    allAlbums = albums;
     return allAlbums;
   }
 }
