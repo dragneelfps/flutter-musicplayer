@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class DetailDashboard extends StatelessWidget {
   final String imageUri;
+  final IconData imageIcon;
   final String imageTag;
   final List<DataTile> dataItems;
   final Color color;
@@ -9,6 +10,7 @@ class DetailDashboard extends StatelessWidget {
   const DetailDashboard(
       {Key key,
       this.imageUri,
+      this.imageIcon,
       this.dataItems = const <DataTile>[],
       this.color = Colors.white,
       this.imageTag})
@@ -18,7 +20,7 @@ class DetailDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget image;
     if (imageUri == null) {
-      image = Icon(Icons.album, size: 200);
+      image = Icon(imageIcon, size: 200);
     } else {
       image = Image.asset(imageUri, width: 200, height: 200);
     }

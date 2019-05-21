@@ -10,6 +10,15 @@ class Artist {
 
   Artist({this.artistName, this.albums, this.songs});
 
+  //Returns length in millis
+  int getAlbumLength() {
+    int length = 0;
+    songs.forEach((song) {
+      length += song.duration;
+    });
+    return length;
+  }
+
   static Artist getArtistByName(String name) => allArtists
       .firstWhere((artist) => artist.artistName == name, orElse: () => null);
 

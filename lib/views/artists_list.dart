@@ -2,6 +2,9 @@ import 'package:flute_music_player/flute_music_player.dart';
 import 'package:flutter/material.dart';
 import 'package:musicplayer/models/artist.dart';
 
+import 'artist_detail.dart';
+import 'util/custom_page_route_builder.dart';
+
 class ArtistsList extends StatefulWidget {
   final List<Song> songs;
 
@@ -42,11 +45,21 @@ class _ArtistsListState extends State<ArtistsList>
     } else {
       return ListView(
         children: artists.map((artist) {
+          final artistImageTag = 'artist_image_${artist.artistName}';
           return ListTile(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                  context,
+                  DurationMaterialPageRoute(
+                      duration: Duration(milliseconds: 500),
+                      builder: (context) => ArtistDetail(
+                            artist: artist,
+                            imageTag: artistImageTag,
+                          )));
+            },
             leading: Hero(
-              child: Icon(Icons.music_note),
-              tag: 'album_art',
+              child: Icon(Icons.music_note, size: 50),
+              tag: artistImageTag,
             ),
             title: Text(artist.artistName),
             subtitle: Text(
