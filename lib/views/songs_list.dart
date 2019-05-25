@@ -1,23 +1,10 @@
 import 'package:flute_music_player/flute_music_player.dart';
 import 'package:flutter/material.dart';
 
-class SongsList extends StatefulWidget {
+class SongsList extends StatelessWidget {
   final List<Song> songs;
 
-  const SongsList({Key key, this.songs}) : super(key: key);
-
-  @override
-  _SongsListState createState() => _SongsListState(songs: songs);
-}
-
-class _SongsListState extends State<SongsList>
-    with AutomaticKeepAliveClientMixin<SongsList> {
-  @override
-  bool get wantKeepAlive => true;
-
-  final List<Song> songs;
-
-  _SongsListState({this.songs});
+  SongsList({this.songs});
 
   Widget _buildShuffleRow() {
     return InkWell(
@@ -82,7 +69,6 @@ class _SongsListState extends State<SongsList>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return Column(
       children: [_buildShuffleRow(), _buildSongsList()],
     );
