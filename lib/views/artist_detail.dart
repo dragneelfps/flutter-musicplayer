@@ -48,7 +48,7 @@ class ArtistDetail extends StatelessWidget {
 
   Widget _buildArtistAlbumsList(BuildContext context) {
     final itemWidth = MediaQuery.of(context).size.width / 3;
-    return StaggeredGridView.countBuilder(
+    return SliverStaggeredGrid.countBuilder(
       crossAxisCount: 3,
       itemCount: artist.albums.length,
       staggeredTileBuilder: (_) => StaggeredTile.fit(1),
@@ -118,19 +118,22 @@ class ArtistDetail extends StatelessWidget {
           title: artist.artistName,
           actions: _getActions(),
           color: Colors.grey),
-      body: Column(
-        children: [
-          DetailDashboard(
-            imageIcon: Icons.music_note,
-            imageTag: imageTag,
-            dataItems: _buildDashboardDataItems(),
-            color: Colors.grey,
-          ),
-          Expanded(child: _buildArtistAlbumsList(context)),
-          Expanded(
-            child: ListView(children: _buildAlbumSongsList()),
-          )
-        ],
+      body: Container(
+        child: CustomScrollView(
+          slivers: <Widget>[
+            SliverToBoxAdapter(
+              child: DetailDashboard(
+                imageIcon: Icons.music_note,
+                imageTag: imageTag,
+                dataItems: _buildDashboardDataItems(),
+                color: Colors.grey,
+              ),
+            ),
+            _buildArtistAlbumsList(context),
+            SliverList(
+                delegate: SliverChildListDelegate(_buildAlbumSongsList()))
+          ],
+        ),
       ),
     );
   }
