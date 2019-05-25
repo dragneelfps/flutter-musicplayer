@@ -9,14 +9,12 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
-  TabController _tabController;
+class _HomeState extends State<Home> {
   List<Song> songs;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(vsync: this, length: 3);
     _loadSongs();
   }
 
