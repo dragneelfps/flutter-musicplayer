@@ -1,28 +1,29 @@
-import 'package:flute_music_player/flute_music_player.dart';
+import 'package:audioplayer/audioplayer.dart';
 import 'package:flutter/material.dart';
 import 'package:musicplayer/views/albums_list.dart';
 import 'package:musicplayer/views/artists_list.dart';
+import 'package:musicplayer/views/player.dart';
 import 'package:musicplayer/views/songs_list.dart';
 
 class Home extends StatefulWidget {
+  final AudioPlayer audioPlayer = new AudioPlayer();
+
   @override
-  _HomeState createState() => _HomeState();
+  _HomeState createState() => _HomeState(audioPlayer: audioPlayer);
 }
 
 class _HomeState extends State<Home> {
-  List<Song> songs;
+  final AudioPlayer audioPlayer;
 
-  @override
-  void initState() {
-    super.initState();
-    _loadSongs();
-  }
+  _HomeState({@required this.audioPlayer}) : assert(audioPlayer != null);
 
-  void _loadSongs() async {
-    List<Song> allSongs = await MusicFinder.allSongs();
-    setState(() {
-      songs = allSongs;
-    });
+  Widget _buildPlayer() {
+    return Player();
+    // if (_currentPlaylist == null) {
+    //   return Container();
+    // } else {
+    //   return Player();
+    // }
   }
 
   @override
@@ -38,11 +39,18 @@ class _HomeState extends State<Home> {
             Tab(text: 'Artists')
           ]),
         ),
-        body: TabBarView(
+        body: Column(
           children: [
-            SongsList(songs: songs),
-            AlbumsList(songs: songs),
-            ArtistsList(songs: songs),
+            Expanded(
+              child: TabBarView(
+                children: [
+                  SongsList(),
+                  AlbumsList(),
+                  ArtistsList(),
+                ],
+              ),
+            ),
+            _buildPlayer()
           ],
         ),
       ),

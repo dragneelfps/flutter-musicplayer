@@ -1,48 +1,25 @@
-import 'package:flute_music_player/flute_music_player.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:musicplayer/models/album.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:musicplayer/redux/state.dart';
+import 'package:musicplayer/redux/viewmodels.dart';
 import 'package:musicplayer/views/album_detail.dart';
 import 'package:musicplayer/views/util/custom_page_route_builder.dart';
 
 class AlbumsList extends StatefulWidget {
-  final List<Song> songs;
-
-  const AlbumsList({Key key, this.songs}) : super(key: key);
-
   @override
-  _AlbumsListState createState() => _AlbumsListState(songs: songs);
+  _AlbumsListState createState() => _AlbumsListState();
 }
 
-class _AlbumsListState extends State<AlbumsList>
-    with AutomaticKeepAliveClientMixin<AlbumsList> {
-  @override
-  bool get wantKeepAlive => true;
-
-  final List<Song> songs;
-  List<Album> albums;
-
-  _AlbumsListState({this.songs});
-
-  @override
-  void initState() {
-    super.initState();
-    if (songs != null) {
-      _loadAlbums();
-    }
-  }
-
-  void _loadAlbums() async {
-    final loadedAlbums = Album.getAlbumsFromSongs(songs);
-    setState(() {
-      albums = loadedAlbums;
-    });
-  }
+class _AlbumsListState extends State<AlbumsList> {
+  AlbumListViewModel model;
 
   Widget _buildGridAlbumsList(Orientation orientation) {
-    if (songs == null || albums == null) {
+    if (model.isLoading || model.albums == null) {
       return Container();
     } else {
+      final albums = model.albums;
       final crossAxisCount = orientation == Orientation.portrait ? 2 : 6;
       final screenWidth = MediaQuery.of(context).size.width;
       final itemWidth = screenWidth / crossAxisCount;
@@ -104,10 +81,15 @@ class _AlbumsListState extends State<AlbumsList>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-    return OrientationBuilder(
-      builder: (context, orientation) {
-        return _buildGridAlbumsList(orientation);
+    return StoreConnector<AppState, AlbumListViewModel>(
+      converter: (store) => AlbumListViewModel.fromStore(store),
+      builder: (context, model) {
+        this.model = model;
+        return OrientationBuilder(
+          builder: (context, orientation) {
+            return _buildGridAlbumsList(orientation);
+          },
+        );
       },
     );
   }
